@@ -1,0 +1,20 @@
+
+library(rvest)
+league <- html_session("http://www.nba.com/teams/?ls=iref:nba:gnav")
+#From a page on NBA.com, listing all the teams in the league:
+#Divides the league into two Conferences
+east <- league %>% 
+  html() %>%
+  html_nodes("td:nth-child(1) .nbateamname a , .nbaeastconference p") %>%
+  html_text()
+
+west <- league %>%
+  html() %>%
+  html_nodes("td+ td .nbateamname a , .nbawestconference p") %>%
+  html_text()
+
+#Lists what can be done from that page
+options <- league %>%
+  html_nodes(".nbabullet , .nbaQlinks") %>%
+  html_text() %>%
+  .[2:4]
